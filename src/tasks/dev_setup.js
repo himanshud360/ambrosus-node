@@ -12,6 +12,7 @@ import path from 'path';
 import Builder from '../builder';
 import BundleRegistry from '../../contracts/BundleRegistry.json';
 import {deployContract, getDefaultAddress} from '../../src/utils/web3_tools';
+import config from '../../config/config';
 
 async function createAdminAccount(dataModelEngine) {
   try {
@@ -60,13 +61,9 @@ async function setupDevelopment(dataModelEngine) {
 
 const builder = new Builder();
 
-builder.build()
+builder.build({}, config)
   .then(async ({client, dataModelEngine}) => {
-    try {
-      await setupDevelopment(dataModelEngine);
-    } catch (err) {
-      console.error(`Verify if config files have correctly set 'web3.rpc' and 'web3.nodePrivateKey'\n${err.message}`);
-    }
+    await setupDevelopment(dataModelEngine);
     await client.close();
   })
   .catch((exception) => {

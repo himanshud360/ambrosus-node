@@ -16,7 +16,7 @@ import nullConsole from '../helpers/null_console';
 import BundleDownloader from '../../src/workers/bundle_downloader';
 import ContractManager from '../../src/services/contract_manager';
 import Builder from '../../src/builder';
-import Config from '../../src/utils/config';
+import config from '../../config/config';
 import {createFullAsset} from '../fixtures/assets_events';
 import {adminAccountWithSecret} from '../fixtures/account';
 
@@ -34,23 +34,18 @@ describe('Bundle downloader - integration', () => {
 
   before(async () => {
     web3 = await createWeb3();
+    config.bundleRegistryContractAddress = await ContractManager.deploy(web3);
   });
 
   beforeEach(async () => {
-    const bundleRegistryContractAddress = await ContractManager.deploy(web3);
-
     // Create two configuration objects aimed at two different Mongo DBs
     // The purpose is to simulate one db where the bundles originate and are
     // downloaded from, and another db where bundles are inserted to.
-    const config1 = Config.default({bundleRegistryContractAddress});
-    const config2 = Config.default({
-      bundleRegistryContractAddress,
-      mongoHosts: config1.mongoHosts,
-      mongoDbName: 'second_db'
-    });
+    const config2 = JSON.parse(JSON.stringify(config));
+    config2.mongoDbName = 'second_db';
 
     apparatus = new Apparatus();
-    await apparatus.start(web3, config1);
+    await apparatus.start(web3, config);
 
     const builder = new Builder();
     ({dataModelEngine, client} = await builder.build({web3}, config2));

@@ -15,18 +15,21 @@ import {cleanDatabase} from '../../src/utils/db_utils';
 import {getTimestamp} from '../../src/utils/time_utils';
 import {createWeb3} from '../../src/utils/web3_tools';
 import {adminAccountWithSecret} from '../fixtures/account';
-import Config from '../../src/utils/config';
+import config from '../../config/config';
 
 chai.use(chaiHttp);
 
 export default class Apparatus extends Application {
   DEFAULT_TOKEN_EXPIRATION = 60 * 60 * 24 * 28;
 
-  async start(_web3, config = Config.default()) {
+  async start(_web3) {
     const web3 = _web3 || await createWeb3(config);
-    const bundleRegistryContractAddress = config.bundleRegistryContractAddress() || await ContractManager.deploy(web3);
-    const configWith = config.withAttributes({bundleRegistryContractAddress});
-    await this.build({web3}, configWith);
+
+    if (!config.bundleRegistryContractAddress) {
+      config.bundleRegistryContractAddress = await ContractManager.deploy(web3);
+    }
+
+    await this.build({web3}, config);
     await this.cleanDB();
     await this.startServer();
   }
@@ -48,7 +51,7 @@ export default class Apparatus extends Application {
   }
 
   url() {
-    return `http://127.0.0.1:${this.config.serverPort()}`;
+    return `http://127.0.0.1:${this.config.serverPort}`;
   }
 
   async stop() {

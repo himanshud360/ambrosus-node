@@ -19,14 +19,11 @@ chai.use(chaiAsPromised);
 
 const {expect} = chai;
 
-describe('Nodeinfo - Integrations', async () => {
+describe.only('Nodeinfo - Integrations', async () => {
   let apparatus;
-  let gitCommit;
 
   describe('Check if it works', async () => {
     before(async () => {
-      gitCommit = 'aaaaaaa';
-      process.env.GIT_COMMIT = gitCommit;
       apparatus = new Apparatus();
       await apparatus.start(null);
     });
@@ -35,7 +32,10 @@ describe('Nodeinfo - Integrations', async () => {
       await apparatus.cleanDB();
     });
 
-    it('should return npm version, git commit and address', async () => {
+    it.only('should return npm version, git commit and address', async () => {
+      const gitCommit = 'aaaaaa';
+      apparatus.config.gitCommit = gitCommit;
+      console.log('apparatus.config', apparatus.config);
       const nodeinfo = await apparatus.request().get('/nodeinfo');
       expect(nodeinfo.body.commit).to.eql(gitCommit);
       expect(nodeinfo.body.version).to.match(/^\d+\.\d+\.\d+$/);

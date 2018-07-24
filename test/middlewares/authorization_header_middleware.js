@@ -15,6 +15,7 @@ import {ValidationError, PermissionError} from '../../src/errors/errors';
 import pkPair from '../fixtures/pk_pair';
 import ambAuthorizationHeaderMiddleware from '../../src/middlewares/amb_authorization_header_middleware';
 import {pick} from '../../src/utils/dict_utils';
+import config from '../../config/config';
 
 chai.use(sinonChai);
 const {expect} = chai;
@@ -23,7 +24,6 @@ describe('Authorisation header middleware', () => {
   let request;
   let response;
   let next;
-  let config;
 
   beforeEach(async () => {
     next = spy();
@@ -37,7 +37,7 @@ describe('Authorisation header middleware', () => {
 
   describe('Amb authorization is enabled', () => {
     before(() => {
-      config = {isAuthorizationWithSecretKeyEnabled: () => true};
+      config.authorizationWithSecretKeyEnabled = true;
     });
 
     it('adds ambSecret to the request if authorization header with an AMB secret provided', () => {
@@ -67,7 +67,7 @@ describe('Authorisation header middleware', () => {
 
   describe('Amb authorization is disabled', () => {
     before(() => {
-      config = {isAuthorizationWithSecretKeyEnabled: () => false};
+      config.authorizationWithSecretKeyEnabled = false;
     });
 
     it('does nothing if no authorization header with an AMB secret was provided', () => {

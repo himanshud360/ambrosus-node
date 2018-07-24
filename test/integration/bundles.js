@@ -11,6 +11,7 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import chaiHttp from 'chai-http';
+import config from '../../config/config';
 
 import {adminAccountWithSecret} from '../fixtures/account';
 import Apparatus, {apparatusScenarioProcessor} from '../helpers/apparatus';

@@ -5,8 +5,6 @@ const registryContractAddress = (
 );
 
 module.exports = {
-  mongoHosts: 'localhost:27017',
-  mongoDbName: 'ambrosus_gateway_development',
   bundle: {registryContractAddress},
   web3: {
     rpc: 'http://localhost:8545',

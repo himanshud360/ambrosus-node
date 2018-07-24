@@ -8,10 +8,11 @@ This Source Code Form is “Incompatible With Secondary Licenses”, as defined 
 */
 
 import Application from './application';
+import config from '../config/config';
 
 async function start() {
   const application = new Application();
-  await application.build();
+  await application.build({}, config);
   await application.ensureAdminAccountExist();
   await application.startServer();
   await application.startBackground();

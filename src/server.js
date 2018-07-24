@@ -41,7 +41,7 @@ export default class Server {
 
     app.use(cachePreventionMiddleware);
 
-    app.use('/nodeinfo', nodeInfoRouter(this.modelEngine.identityManager, this.config.gitCommit()));
+    app.use('/nodeinfo', nodeInfoRouter(this.modelEngine.identityManager, this.config.gitCommit));
     app.use('/accounts', accountsRouter(this.modelEngine.tokenAuthenticator, this.modelEngine));
     app.use('/assets', assetsRouter(this.modelEngine.tokenAuthenticator, this.modelEngine.identityManager, this.modelEngine, this.config));
     app.use('/events', eventsRouter(this.modelEngine.tokenAuthenticator, this.modelEngine.identityManager, this.modelEngine));
@@ -53,7 +53,7 @@ export default class Server {
     // Should always be last
     app.use(errorHandling);
 
-    this.server = app.listen(this.config.serverPort());
+    this.server = app.listen(this.config.serverPort);
   }
 
   stop() {

@@ -11,6 +11,7 @@ import express from 'express';
 import asyncMiddleware from '../middlewares/async_middleware';
 
 export const getNodeInfoHandler = (identityManager, gitCommit) => (req, res) => {
+  console.log('gitCommit here', gitCommit);
   require('pkginfo')(module, 'version');
   res.status(200).send({
     commit: gitCommit,
