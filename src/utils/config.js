@@ -45,8 +45,28 @@ export default class Config {
     return process.env.PORT || config.get('server.port');
   }
 
-  mongoUri() {
-    return this.attributes.mongoUri || process.env.MONGODB_URI || config.get('mongoUri');
+  mongoHosts() {
+    return process.env.MONGO_HOSTS || config.get('mongoHosts');
+  }
+  mongoDbName() {
+    return this.attributes.mongoDbName ||
+      process.env.MONGO_DB_NAME ||
+      config.get('mongoDbName');
+  }
+  mongoReplicaSet() {
+    return process.env.MONGO_REPLICA_SET;
+  }
+  mongoX509User() {
+    return process.env.MONGO_X509_USER;
+  }
+  mongoX509SslCaPath() {
+    return process.env.MONGO_X509_SSL_CA_PATH;
+  }
+  mongox509SslCertPath() {
+    return process.env.MONGO_x509_SSL_CERT_PATH;
+  }
+  mongox509SslKeyPath() {
+    return process.env.MONGO_X509_SSL_KEY_PATH;
   }
 
   nodePrivateKey() {

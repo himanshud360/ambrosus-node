@@ -9,7 +9,6 @@ This Source Code Form is “Incompatible With Secondary Licenses”, as defined 
 
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import url from 'url';
 import {createWeb3, getDefaultAddress} from '../../src/utils/web3_tools';
 import Apparatus, {apparatusScenarioProcessor} from '../helpers/apparatus';
 import ScenarioBuilder from '../fixtures/scenario_builder';
@@ -44,10 +43,10 @@ describe('Bundle downloader - integration', () => {
     // The purpose is to simulate one db where the bundles originate and are
     // downloaded from, and another db where bundles are inserted to.
     const config1 = Config.default({bundleRegistryContractAddress});
-    const mongoUrl = url.parse(config1.mongoUri());
     const config2 = Config.default({
       bundleRegistryContractAddress,
-      mongoUri: `${mongoUrl.protocol}//${mongoUrl.host}/second_db`
+      mongoHosts: config1.mongoHosts,
+      mongoDbName: 'second_db'
     });
 
     apparatus = new Apparatus();
