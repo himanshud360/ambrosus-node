@@ -19,7 +19,7 @@ chai.use(chaiAsPromised);
 
 const {expect} = chai;
 
-describe.only('Nodeinfo - Integrations', async () => {
+describe('Nodeinfo - Integrations', async () => {
   let apparatus;
 
   describe('Check if it works', async () => {
@@ -32,7 +32,7 @@ describe.only('Nodeinfo - Integrations', async () => {
       await apparatus.cleanDB();
     });
 
-    it.only('should return npm version, git commit and address', async () => {
+    it('should return npm version, git commit and address', async () => {
       const gitCommit = 'aaaaaa';
       apparatus.config.gitCommit = gitCommit;
       console.log('apparatus.config', apparatus.config);
